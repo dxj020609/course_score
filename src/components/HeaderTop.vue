@@ -9,11 +9,20 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-      <el-menu-item index="1">
-        <router-link to="/Task" style="text-decoration: none;">
+    <el-submenu index="1">
+      <template slot="title">任务查询</template>
+      
+      <router-link to="/Task" style="text-decoration: none;">
+        <el-menu-item index="1-1">
         任务查看
-        </router-link>
-      </el-menu-item>
+        </el-menu-item>
+      </router-link>
+      <router-link to="/result" style="text-decoration: none;">
+        <el-menu-item index="1-2">
+        任务成绩
+        </el-menu-item>
+      </router-link>
+    </el-submenu>
       <el-submenu index="2">
         <template slot="title">任务评分</template>
         <router-link to="/course">
@@ -30,11 +39,6 @@
           <el-menu-item index="2-4-3">选项3</el-menu-item>
         </el-submenu>
       </el-submenu>
-      <el-menu-item index="3">
-        <router-link to="/result" style="text-decoration: none;">
-        任务成绩
-        </router-link>
-      </el-menu-item>
       <el-header
         class="el-header"
         style="text-align: right; font-size: 12px; line-height: 60px"
