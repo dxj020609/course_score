@@ -25,10 +25,12 @@
     </el-submenu>
       <el-submenu index="2">
         <template slot="title">任务评分</template>
-        <router-link to="/course">
+        <router-link to="/coursemyself">
           <el-menu-item index="2-1">自我评分</el-menu-item>
         </router-link>
-        <el-menu-item index="2-2">小组评分</el-menu-item>
+        <router-link to="/coursegroup">
+          <el-menu-item index="2-2">小组评分</el-menu-item>
+        </router-link>
         <!-- 权限判断，老师才可以评分 -->
         <el-menu-item index="2-3" v-if="false">教师评分</el-menu-item>
         <!-- 权限判断，导师才可以评分 -->

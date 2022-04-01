@@ -3,6 +3,7 @@ import HomePage from '../pages/HomePage.vue'
 import TaskList from '../pages/TaskList.vue'
 import CourseMyself from '../pages/CourseMySelf.vue'
 import CourseResult from '../pages/CourseResult.vue'
+import CourseGroup from '../pages/CourseGroup.vue'
 
  const router = new VueRouter({
     routes:[
@@ -17,7 +18,7 @@ import CourseResult from '../pages/CourseResult.vue'
             component:TaskList
         },
         {
-            path:'/course',
+            path:'/coursemyself',
             meta:{title:'自我评分'},
             component:CourseMyself
         },
@@ -25,6 +26,11 @@ import CourseResult from '../pages/CourseResult.vue'
             path:'/result',
             meta:{title:'任务成绩'},
             component:CourseResult
+        },
+        {
+            path:'/coursegroup',
+            meta:{title:'小组评分'},
+            component:CourseGroup
         }
     ]
 })
