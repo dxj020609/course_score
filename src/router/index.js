@@ -2,6 +2,7 @@ import VueRouter from "vue-router";
 import HomePage from '../pages/HomePage.vue'
 import TaskList from '../pages/TaskList.vue'
 import CourseMyself from '../pages/CourseMySelf.vue'
+import CourseResult from '../pages/CourseResult.vue'
 
  const router = new VueRouter({
     routes:[
@@ -19,6 +20,11 @@ import CourseMyself from '../pages/CourseMySelf.vue'
             path:'/course',
             meta:{title:'自我评分'},
             component:CourseMyself
+        },
+        {
+            path:'/result',
+            meta:{title:'任务成绩'},
+            component:CourseResult
         }
     ]
 })

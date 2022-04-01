@@ -8,7 +8,6 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      menu-trigger='click'
     >
       <el-menu-item index="1">
         <router-link to="/Task" style="text-decoration: none;">
@@ -21,19 +20,21 @@
           <el-menu-item index="2-1">自我评分</el-menu-item>
         </router-link>
         <el-menu-item index="2-2">小组评分</el-menu-item>
-        <el-menu-item index="2-3">教师评分</el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">导师评分</template>
+        <!-- 权限判断，老师才可以评分 -->
+        <el-menu-item index="2-3" v-if="false">教师评分</el-menu-item>
+        <!-- 权限判断，导师才可以评分 -->
+        <el-submenu index="2-4" v-if="false"> 
+          <template slot="title" >导师评分</template>
           <el-menu-item index="2-4-1">选项1</el-menu-item>
           <el-menu-item index="2-4-2">选项2</el-menu-item>
           <el-menu-item index="2-4-3">选项3</el-menu-item>
         </el-submenu>
       </el-submenu>
-      <!-- <el-menu-item index="3">消息中心</el-menu-item>
-      <el-menu-item index="4">
-        <a href="https://www.ele.me" target="_blank">订单管理</a>
-      </el-menu-item> -->
-      <!-- 个人信息 -->
+      <el-menu-item index="3">
+        <router-link to="/result" style="text-decoration: none;">
+        任务成绩
+        </router-link>
+      </el-menu-item>
       <el-header
         class="el-header"
         style="text-align: right; font-size: 12px; line-height: 60px"
