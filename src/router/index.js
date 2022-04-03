@@ -1,37 +1,52 @@
 import VueRouter from "vue-router";
-import HomePage from '../pages/HomePage.vue'
 import TaskList from '../pages/TaskList.vue'
 import CourseMyself from '../pages/CourseMySelf.vue'
 import CourseResult from '../pages/CourseResult.vue'
 import CourseGroup from '../pages/CourseGroup.vue'
+import UserLogin from '../components/UserLogin.vue'
+import EduIndex from '../components/EduIndex.vue'
+import HomePage from '../pages/HomePage.vue'
 
  const router = new VueRouter({
     routes:[
         {
             path:'/',
+            meta:{title:'登录'},
+            component:UserLogin
+        },
+        {
+            path:'/index',
             meta:{title:'主页'},
-            component:HomePage
+            component:EduIndex,
+            children:[
+                {
+                    path:'',
+                    meta:{title:'主页'},
+                    component:HomePage
+                },
+                {
+                    path:'Task',
+                    meta:{title:'任务查看'},
+                    component:TaskList
+                },
+                {
+                    path:'coursemyself',
+                    meta:{title:'自我评分'},
+                    component:CourseMyself
+                },
+                {
+                    path:'result',
+                    meta:{title:'任务成绩'},
+                    component:CourseResult
+                },
+                {
+                    path:'coursegroup',
+                    meta:{title:'小组评分'},
+                    component:CourseGroup
+                }
+            ]
         },
-        {
-            path:'/Task',
-            meta:{title:'任务查看'},
-            component:TaskList
-        },
-        {
-            path:'/coursemyself',
-            meta:{title:'自我评分'},
-            component:CourseMyself
-        },
-        {
-            path:'/result',
-            meta:{title:'任务成绩'},
-            component:CourseResult
-        },
-        {
-            path:'/coursegroup',
-            meta:{title:'小组评分'},
-            component:CourseGroup
-        }
+        
     ]
 })
 

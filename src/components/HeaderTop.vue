@@ -9,26 +9,26 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-    <el-submenu index="1">
-      <template slot="title">任务查询</template>
-      
-      <router-link to="/Task" style="text-decoration: none;">
-        <el-menu-item index="1-1">
-        任务查看
-        </el-menu-item>
-      </router-link>
-      <router-link to="/result" style="text-decoration: none;">
-        <el-menu-item index="1-2">
-        任务成绩
-        </el-menu-item>
-      </router-link>
-    </el-submenu>
+      <el-submenu index="1">
+        <template slot="title">任务查询</template>
+        
+        <router-link to="/index/Task" style="text-decoration: none;">
+          <el-menu-item index="1-1">
+          任务查看
+          </el-menu-item>
+        </router-link>
+        <router-link to="/index//result" style="text-decoration: none;">
+          <el-menu-item index="1-2">
+          任务成绩
+          </el-menu-item>
+        </router-link>
+      </el-submenu>
       <el-submenu index="2">
         <template slot="title">任务评分</template>
-        <router-link to="/coursemyself">
+        <router-link to="/index/coursemyself" style="text-decoration: none;">
           <el-menu-item index="2-1">自我评分</el-menu-item>
         </router-link>
-        <router-link to="/coursegroup">
+        <router-link to="/index/coursegroup"  style="text-decoration: none;">
           <el-menu-item index="2-2">小组评分</el-menu-item>
         </router-link>
         <!-- 权限判断，老师才可以评分 -->

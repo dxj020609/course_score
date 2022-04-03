@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-table class="table" :data="tableData" border style="width: 100%" >
-        <el-table-column class="page-component__scroll" type="selection" width="55px" align='center'  :resizable='false'> </el-table-column>
-        <el-table-column prop="studentId" label="课程名" width="260px" align='center' :resizable='false'></el-table-column>
-        <el-table-column prop="studentName" label="项目名" width="260px" align='center' :resizable='false'> </el-table-column>
+        <el-table-column prop="studentId" label="课程名" width="200px" align='center' :resizable='false'></el-table-column>
+        <el-table-column prop="studentName" label="项目名" width="200px" align='center' :resizable='false'> </el-table-column>
+        <el-table-column prop="studentName" label="任务名" width="175px" align='center' :resizable='false'> </el-table-column>
         <el-table-column prop="sex" label="老师名" width="150px" align='center' :resizable='false'></el-table-column>
         <el-table-column prop="password" label="开始时间" width="330px" align='center' :resizable='false'></el-table-column>
         <el-table-column prop="password" label="结束时间" width="330px" align='center' :resizable='false'></el-table-column>
