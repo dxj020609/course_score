@@ -85,12 +85,6 @@ export default {
     -moz-border-radius: 5px;
     box-shadow: 0 0 25px #909399;
   }
-#User_login{
-    width: 25%;
-    height: 30%;
-    margin: 0 auto ;
-    border-radius: 4px;
-}
 #User_login #user,#password,#submit{
     margin: 20px;
 }
