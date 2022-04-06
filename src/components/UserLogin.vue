@@ -3,8 +3,8 @@
         <div style="margin: 20px;">
             <el-form ref="formdata" :model="formdata" :rules="rules" label-width="80px" class="login-box" status-icon show-message>
                 <h3 class="login-title">欢迎登录</h3>
-                <el-form-item label="用户名" prop="username">
-                    <el-input type="text" v-model="formdata.username"></el-input>
+                <el-form-item label="学号" prop="username" >
+                    <el-input type="text" v-model.number="formdata.username"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                     <el-input type="password" v-model="formdata.password" @keydown.enter.native="submit('formdata')"></el-input>
@@ -19,22 +19,47 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name:'UserLogin',
     data(){
         //编写规则
         var checkUserName = (rule, value, callback) => {
+            
             if(value === ""){
                 //返回错误信息
-                callback(new Error('账号不可为空'))
-            }else if( value != 'onepeice'){
-                //返回错误信息
-                callback(new Error('账号不正确!'));
+                callback(new Error('学号不正确'))
             }else{
-                //放行
-                callback()
-            }
+                if(typeof(value) != 'number'){
+                    console.log(typeof(value));
+                    callback(new Error('学号错误'))
+                }else{
+                    axios({
+                        method: 'POST',
+                        url: 'http://localhost:8080/api2/CheckId',
+                        params:{
+                            id:value
+                        }
+                    }).then((response)=>{
+                        if( !response.data ){
+                            //返回错误信息
+                            callback(new Error('学号错误!'));
+                        }else{
+                            //放行
+                            callback()
+                        }
+                    })
+                }
+            }  
+        }
 
+        var checkPassword = (rule, value, callback) => {
+            if(value === ""){
+                    //返回错误信息
+                    callback(new Error('密码不可为空'))
+            }else{
+                callback()
+            }  
         }
 
         return {
@@ -45,11 +70,11 @@ export default {
             // 校准验证
             rules:{
                 username:[
-                    //表示是必输入和使用checkUserName规则，失去焦点触发
-                    {validator: checkUserName,trigger:"blur"}
+                    //表示 使用checkUserName规则，焦点切换触发
+                    {validator: checkUserName,trigger:"change"}
                 ],
                 password:[
-                    {required:true,message:"密码不可为空",tigger:"blur"}
+                    {validator:checkPassword,tigger:"change"}
                 ]
             }
         }
@@ -58,9 +83,23 @@ export default {
         //提交前进行验证，同时还应该进行对账号密码的判定
         submit(formName){
             this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.$router.push('/index')
-                } else {
+                if(valid){
+                    axios({
+                        method: 'POST',
+                        url: 'http://localhost:8080/api2/CheckPwd',
+                        params:{
+                            id:this.formdata.username,
+                            pwd:this.formdata.password
+                        }
+                    }).then((response)=>{
+                        sessionStorage.setItem('user',JSON.stringify(this.formdata.username))
+                        if (response.data) {
+                            this.$router.push('/index')
+                        } else {
+                            return false;
+                        }
+                    })
+                }else{
                     return false;
                 }
             });
@@ -68,9 +107,13 @@ export default {
         // 清空所有内容
         clearInput(form) {
             this.$refs[form].resetFields();
-            
         }
-    }
+    },
+    mounted() {
+        if(sessionStorage.getItem('user')!= null){
+            this.$router.push('/index')
+        }    
+    },
 }
 </script>
 

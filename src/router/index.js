@@ -51,7 +51,6 @@ import HomePage from '../pages/HomePage.vue'
 })
 
 router.afterEach((to) => {
-    console.log(to);
     // to and from are both route objects.
     if(to.meta.title){
         document.title = to.meta.title

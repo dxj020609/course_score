@@ -4,7 +4,6 @@
       id="Top"
       class="el-menu-demo"
       mode="horizontal"
-      @select="handleSelect"
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
@@ -17,7 +16,7 @@
           任务查看
           </el-menu-item>
         </router-link>
-        <router-link to="/index//result" style="text-decoration: none;">
+        <router-link to="/index/result" style="text-decoration: none;">
           <el-menu-item index="1-2">
           任务成绩
           </el-menu-item>
@@ -49,27 +48,40 @@
           <i class="el-icon-s-custom" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
+            <el-dropdown-item  @click.native="exit">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>王小虎</span>
+        <span>{{user.studentName}}</span>
       </el-header>
     </el-menu>
   </div>
 </template>
 
 <script>
-
+import axios from 'axios';
 export default {
   name: "HeaderTop",
   data() {
-    return {};
+    return {
+      user:{}
+    };
   },
   methods: {
-    handleSelect() {
-      console.log(1);
-    },
+    exit(){
+      sessionStorage.removeItem('user')
+      this.$router.push('/')
+    }
+  },
+  mounted() {
+    axios({
+      method:'Get',
+      url:'http://localhost:8080/api2/StudentName',
+      params:{
+        id:sessionStorage.getItem('user')
+      }
+    }).then((response)=>{
+      this.user = response.data
+    })
   },
 };
 </script>
