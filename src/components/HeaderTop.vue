@@ -30,16 +30,22 @@
         <router-link to="/index/coursegroup"  style="text-decoration: none;">
           <el-menu-item index="2-2">小组评分</el-menu-item>
         </router-link>
-        <!-- 权限判断，老师才可以评分 -->
-        <el-menu-item index="2-3" v-if="false">教师评分</el-menu-item>
-        <!-- 权限判断，导师才可以评分 -->
-        <el-submenu index="2-4" v-if="false"> 
-          <template slot="title" >导师评分</template>
-          <el-menu-item index="2-4-1">选项1</el-menu-item>
-          <el-menu-item index="2-4-2">选项2</el-menu-item>
-          <el-menu-item index="2-4-3">选项3</el-menu-item>
-        </el-submenu>
       </el-submenu>
+      <!-- 权限判断，老师才可以评分 -->
+      <el-submenu index="3" >
+          <template slot="title">教师操作</template>
+          <router-link to="/index/Teacherindex" style="text-decoration: none">
+            <el-menu-item index="3-1">教师评分</el-menu-item>
+          </router-link>
+          <el-menu-item index="3-2">授课选择</el-menu-item>
+      </el-submenu>
+        <!-- 权限判断，导师才可以评分 -->
+        <el-submenu index="4" > 
+          <template slot="title" >导师评分</template>
+          <el-menu-item index="4-1">选项1</el-menu-item>
+          <el-menu-item index="4-2">选项2</el-menu-item>
+          <el-menu-item index="4-3">选项3</el-menu-item>
+        </el-submenu>
       <el-header
         class="el-header"
         style="text-align: right; font-size: 12px; line-height: 60px"

@@ -6,6 +6,7 @@ import CourseGroup from '../pages/CourseGroup.vue'
 import UserLogin from '../components/UserLogin.vue'
 import EduIndex from '../components/EduIndex.vue'
 import HomePage from '../pages/HomePage.vue'
+import TeacherOperation from '../pages/TeacherOperation.vue'
 
  const router = new VueRouter({
     routes:[
@@ -43,6 +44,11 @@ import HomePage from '../pages/HomePage.vue'
                     path:'coursegroup',
                     meta:{title:'小组评分'},
                     component:CourseGroup
+                },
+                {
+                    path:'Teacherindex',
+                    meta:{title:'教师评分'},
+                    component:TeacherOperation
                 }
             ]
         },

@@ -6,7 +6,7 @@
             <HeaderTop></HeaderTop>
         </el-header>
 
-        <!-- 显示内容,插槽内容？ -->
+        <!-- 显示内容,插槽内容 -->
         <el-main style="height:607px">
             <router-view></router-view>
         </el-main>

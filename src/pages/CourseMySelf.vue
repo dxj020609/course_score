@@ -33,12 +33,12 @@ export default {
   data() {
     return {
       tableData: [
-          {
+        {
           date: '2016-05-04',
           name: '王小虎',
           address: '上海市普陀区金沙江路 1517 弄'
-          },
-        ]
+        },
+      ]
     }
   },
 }
