@@ -59,7 +59,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="100" align='center' :resizable='false'>
                     <template slot-scope="scope">
-                        <el-button @click="handleClick(scope.row)" type="text" size="small">保存</el-button>
+                        <el-button @click="SaveScope(scope.row)" type="text" size="small">保存</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -82,6 +82,7 @@ export default {
             classes:'',
             project:'',
             task:'',
+            Scope:0,
             classOptions:[],
             courseOptions:[],
             projectOptions:[],
@@ -159,9 +160,31 @@ export default {
             }).then((response)=>{
                 this.taskOptions = response.data;
             })
+        },
+        SaveScope(row){
+            console.log(row);
+            console.log(this.Scope);
+            console.log(row.studentName);
+            axios({
+                method:'GET',
+                url:'http://localhost:8080/api2/addScope',
+                params:{
+                    scope:this.Scope,
+                    scoringType:2,
+                    taskName:row.taskName,
+                    StudentName:row.studentName,
+                    ClassName:row.className,
+                }
+            }).then(()=>{
+                this.$router.push('/index')
+            })
+        },
+        getScope(Scope){
+            this.Scope = Scope
         }
     },
     mounted() {
+        this.$bus.$on('getScope',this.getScope)
         axios({
             method:'GET',
             url:'http://localhost:8080/api2/options'
@@ -174,7 +197,6 @@ export default {
         tableData:{
             handler(newValue){
                 for (let index = 0; index < newValue.length; index++) {
-                    console.log(newValue[index].endTime.substring(0,4));
                     this.tableData[index].endTime = newValue[index].endTime.substring(0,4)+"年"+newValue[index].endTime.substring(5,7)+"月"+newValue[index].endTime.substring(9,10)+"日"
                 }
             }

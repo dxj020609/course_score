@@ -8,7 +8,7 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-      <el-submenu index="1">
+      <el-submenu index="1" >
         <template slot="title">任务查询</template>
         
         <router-link to="/index/Task" style="text-decoration: none;">
@@ -69,7 +69,7 @@ export default {
   name: "HeaderTop",
   data() {
     return {
-      user:{}
+      user:{},
     };
   },
   methods: {

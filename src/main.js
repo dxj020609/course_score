@@ -18,4 +18,8 @@ Vue.use(VueRouter);
 new Vue({
   render: h => h(App),
   router,
+  beforeCreate(){
+      //开启全局事件总线
+      Vue.prototype.$bus = this
+  },
 }).$mount('#app')
