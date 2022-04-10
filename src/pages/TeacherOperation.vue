@@ -176,7 +176,6 @@ export default {
                     ClassName:row.className,
                 }
             }).then(()=>{
-                this.$router.push('/index')
             })
         },
         getScope(Scope){
