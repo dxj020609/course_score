@@ -7,6 +7,7 @@ import UserLogin from '../components/UserLogin.vue'
 import EduIndex from '../components/EduIndex.vue'
 import HomePage from '../pages/HomePage.vue'
 import TeacherOperation from '../pages/TeacherOperation.vue'
+import ScoreTable from '../pages/ScoreTable.vue'
 
  const router = new VueRouter({
     routes:[
@@ -52,6 +53,11 @@ import TeacherOperation from '../pages/TeacherOperation.vue'
                 }
             ]
         },
+        {
+            path:'/RulerTable',
+            meta:{title:'成绩表'},
+            component:ScoreTable
+        }
         
     ]
 })
