@@ -8,6 +8,9 @@ import EduIndex from '../components/EduIndex.vue'
 import HomePage from '../pages/HomePage.vue'
 import TeacherOperation from '../pages/TeacherOperation.vue'
 import ScoreTable from '../pages/ScoreTable.vue'
+import Score from '../pages/Score.vue'
+import Course from '../pages/Course.vue'
+import Project from '../pages/Project.vue'
 
  const router = new VueRouter({
     routes:[
@@ -50,13 +53,34 @@ import ScoreTable from '../pages/ScoreTable.vue'
                     path:'Teacherindex',
                     meta:{title:'教师评分'},
                     component:TeacherOperation
+                },
+                {
+                    path:'RulerTable',
+                    name:'ScoreTable',
+                    meta:{title:'成绩表'},
+                    component:ScoreTable,
+                    
+                },
+                {
+                    path:"Score/:id",
+                    name:'score',
+                    meta:{title:'评分界面'},
+                    component:Score,
+                    props:true
+                },
+                {
+                    path:"Course",
+                    name:"course",
+                    meta:{title:"课程信息"},
+                    component:Course,
+                },{
+                    path:"Project/:teacherId/:classId/:courseId",
+                    name:"project",
+                    meta:{title:"项目信息"},
+                    component:Project,
+                    props:true
                 }
             ]
-        },
-        {
-            path:'/RulerTable',
-            meta:{title:'成绩表'},
-            component:ScoreTable
         }
         
     ]

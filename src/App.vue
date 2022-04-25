@@ -1,6 +1,6 @@
 <template>
   <dir>
-   <router-view></router-view>
+    <router-view  router-view></router-view>
   </dir>
 </template>
 
