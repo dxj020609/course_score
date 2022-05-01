@@ -1,7 +1,7 @@
 import VueRouter from "vue-router";
-import TaskList from '../pages/TaskList.vue'
+import Task from '../pages/TaskList.vue'
 import CourseMyself from '../pages/CourseMySelf.vue'
-import CourseResult from '../pages/CourseResult.vue'
+import Visualizing from '../pages/Visualizing.vue'
 import CourseGroup from '../pages/CourseGroup.vue'
 import UserLogin from '../components/UserLogin.vue'
 import EduIndex from '../components/EduIndex.vue'
@@ -11,6 +11,7 @@ import ScoreTable from '../pages/ScoreTable.vue'
 import Score from '../pages/Score.vue'
 import Course from '../pages/Course.vue'
 import Project from '../pages/Project.vue'
+import Analysis from '../pages/Analysis.vue'
 
  const router = new VueRouter({
     routes:[
@@ -30,19 +31,21 @@ import Project from '../pages/Project.vue'
                     component:HomePage
                 },
                 {
-                    path:'Task',
-                    meta:{title:'任务查看'},
-                    component:TaskList
-                },
-                {
                     path:'coursemyself',
                     meta:{title:'自我评分'},
                     component:CourseMyself
                 },
                 {
-                    path:'result',
-                    meta:{title:'任务成绩'},
-                    component:CourseResult
+                    path:'analysis',
+                    meta:{title:'成绩分析'},
+                    component:Analysis,
+                    children:[
+                        {
+                            path:'all',
+                            meta:{title:'班级成绩分析'},
+                            component:Visualizing,
+                        }
+                    ]
                 },
                 {
                     path:'coursegroup',
@@ -55,11 +58,11 @@ import Project from '../pages/Project.vue'
                     component:TeacherOperation
                 },
                 {
-                    path:'RulerTable',
-                    name:'ScoreTable',
-                    meta:{title:'成绩表'},
+                    path:'Score/:taskId',
+                    name:'scoreTable',
+                    meta:{title:'成绩信息'},
                     component:ScoreTable,
-                    
+                    props:true,
                 },
                 {
                     path:"Score/:id",
@@ -73,11 +76,19 @@ import Project from '../pages/Project.vue'
                     name:"course",
                     meta:{title:"课程信息"},
                     component:Course,
-                },{
+                },
+                {
                     path:"Project/:teacherId/:classId/:courseId",
                     name:"project",
                     meta:{title:"项目信息"},
                     component:Project,
+                    props:true
+                },
+                {
+                    path:"Task/:projectId",
+                    name:"task",
+                    meta:{title:"任务信息"},
+                    component:Task,
                     props:true
                 }
             ]

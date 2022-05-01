@@ -71,10 +71,9 @@
 <script>
 import axios from 'axios'
 import NumScore from '../components/NumScore.vue'
-import Type from '../../../vue_test/13_插槽/1_默认插槽/components/Type.vue'
 export default {
     name:'TeacherOperation',
-    components:{NumScore, Type},
+    components:{NumScore},
     data() {
         return {
             isLoad:false,

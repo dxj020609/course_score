@@ -2,18 +2,19 @@
   <div>
     <el-card class="box-card">
       <div slot="header">
+        <el-page-header @back="goBack"></el-page-header>
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item :to="{ path: '/index/Course'}">课程管理</el-breadcrumb-item>
-          <el-breadcrumb-item>项目管理</el-breadcrumb-item>
-          <el-breadcrumb-item>任务管理</el-breadcrumb-item>
+          <el-breadcrumb-item >项目管理</el-breadcrumb-item>
+          <el-breadcrumb-item >任务管理</el-breadcrumb-item>
           <el-breadcrumb-item>成绩管理</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
     </el-card>
     <el-table class="table" :data="tableData" border >
       <el-table-column
-        prop="StudentId"
+        prop="studentId"
         label="学号"
         width="50px"
         align="center"
@@ -73,7 +74,7 @@
             style="color: green; height: 100%"
           ></i>
           <i
-            v-if="scope.row.scoreStatus == 0"
+            v-if="scope.row.scoreStatus != 1"
             class="el-icon-error"
             style="color: red; height: 100%"
           ></i>
@@ -120,6 +121,7 @@
 import axios from "axios";
 export default {
   name: "ScoreTable",
+  props:['taskId','projectId','teacherId','classId','courseId'],
   data() {
     return {
       //信息
@@ -127,14 +129,23 @@ export default {
     };
   },
   methods: {
-    test123(a){
-      console.log(a);
+    goBack(){
+      this.$router.push({
+            name:'task',
+            params:{
+              projectId:this.projectId,
+              teacherId:this.teacherId,
+              classId:this.classId,
+              courseId:this.courseId
+            }
+        })
     },
     update(row) {
       this.$router.push({
             name:'score',
             params:{
-              id:row.StudentId
+              id:row.studentId,
+              taskId:this.taskId
             }
         })
     },
@@ -145,8 +156,9 @@ export default {
       }).then((response) => {
         axios({
           method: "Get",
-          url: "http://localhost:8080/api2/score/info",
+          url: "http://localhost:8080/api2/score/student/info/"+`${this.taskId}`,
         }).then((response) => {
+          console.log(response);
           this.tableData = response.data.data; 
         });
         if(response.data.code==200){
@@ -166,7 +178,7 @@ export default {
   mounted() {
     axios({
       method: "Get",
-      url: "http://localhost:8080/api2/score/info",
+      url: "http://localhost:8080/api2/score/student/info/"+`${this.taskId}`,
     }).then((response) => {
       this.tableData = response.data.data;  
     });
@@ -180,5 +192,11 @@ export default {
 }
 .box-card{
   margin-bottom: 10px;
+}
+.el-page-header{
+  display: inline-block;
+}
+.el-breadcrumb{
+  display: inline-block;
 }
 </style>

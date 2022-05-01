@@ -16,8 +16,8 @@
                 <el-descriptions-item label="班级">{{studentInfo.className}}</el-descriptions-item>
                 <el-descriptions-item label="组名">{{studentInfo.groupName}}</el-descriptions-item>
                 <el-descriptions-item label="当前评分状态">
-                    <el-tag size="small" type="success" v-if="studentInfo.scoreStatus" >已评</el-tag>
-                    <el-tag size="small" type="danger" v-if="!studentInfo.scoreStatus">未评</el-tag>
+                    <el-tag size="small" type="success" v-if="studentInfo.scoreStatus == 1" >已评</el-tag>
+                    <el-tag size="small" type="danger" v-if="studentInfo.scoreStatus != 1">未评</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item label="联系电话">{{studentInfo.phone}}</el-descriptions-item>
             </el-descriptions>
@@ -52,7 +52,7 @@
 import axios from 'axios'
 export default {
     name:"Score",
-    props:['id'],
+    props:['id','taskId'],
     data() {
         return {
             score:[],
@@ -62,17 +62,20 @@ export default {
     },
     methods:{
         save(){
-            console.log(this.score);
             axios({
                 method: "POST",
-                url: "http://localhost:8080/api2/score/info/add/"+ `${this.score}`+"/"+ `${this.studentInfo.scoreId}`,
+                url: "http://localhost:8080/api2/score/info/add/"+ `${this.score}`,
+                params:{
+                    taskId:this.taskId,
+                    studentId:this.id
+                }
             }).then((response) => { 
                 this.$message({
                     message: response.data.msg,
                     type: 'success'
                 });
                 this.$router.push({
-                    name:'ScoreTable',
+                    name:'scoreTable',
                 })
             });
         },
@@ -93,7 +96,10 @@ export default {
             this.score = arr
             axios({
                 method:"GET",
-                url:"http://localhost:8080/api2/score/info/"+this.id,
+                url:"http://localhost:8080/api2/score/info/"+`${this.id}`,
+                params:{
+                    taskId:this.taskId
+                }
             }).then((response) => {
                 this.studentInfo = response.data.data
             })

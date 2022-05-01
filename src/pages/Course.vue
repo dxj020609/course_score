@@ -8,15 +8,9 @@
         </el-breadcrumb>
       </div>
     </el-card>
-    <!-- <el-row :gutter="60"> -->
-        <!-- <el-col :span="1"> -->
-            <el-button type="primary" class="operate" size="small" @click.native="openDialog">添加</el-button>
-        <!-- </el-col>
-        <el-col :span="1"> -->
-            <el-button type="danger" class="operate" size="small" v-show="delinfo !=''"  @click.native="delCourseInfo">删除</el-button>
-            <el-button type="danger" class="operate" size="small" v-show="delinfo ==''" disabled @click.native="delCourseInfo">删除</el-button>
-        <!-- </el-col> -->
-    <!-- </el-row> -->
+    <el-button type="primary" class="operate" size="small" @click.native="openDialog">添加</el-button>
+    <el-button type="danger" class="operate" size="small" v-show="delinfo !=''"  @click.native="delCourseInfo">删除</el-button>
+    <el-button type="danger" class="operate" size="small" v-show="delinfo ==''" disabled @click.native="delCourseInfo">删除</el-button>  
     <el-table class="table" :data="CourseTable" border  @selection-change="getDetInfo">
         <el-table-column
         type="selection"
@@ -88,7 +82,7 @@
     <el-dialog title="添加课程" :visible.sync="dialogucOpen">
         <el-form >
             <el-form-item label="课程名" label-width="120px">
-                <el-select v-model="courseValue" placeholder="请选择" @change="getclassInfo">
+                <el-select v-model="courseValue" placeholder="请选择授课课程" @change="getclassInfo">
                   <el-option
                     v-for="item in courseInfo"
                     :key="item.courseId"
@@ -99,7 +93,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="班级名" label-width="120px" v-show="courseValue!=''">
-                <el-select  placeholder="请选择活动区域" v-model="classValue" >
+                <el-select  placeholder="请选择授课班级" v-model="classValue" >
                     <el-option v-for="item in classInfo"
                     :key="item.classId"
                     :label="item.className"
@@ -196,7 +190,7 @@ export default {
           }else{
             this.$message({
                     message: response.data.msg,
-                    type: 'danger'
+                    type: 'error'
             });
           }
       })

@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-header class="el-header">
+      <span class="title">学生成绩综合评估分析系统</span>
       <el-dropdown class="el-dropdown">
         <i class="el-icon-s-custom" style="margin-right: 15px"></i>
         <el-dropdown-menu slot="dropdown">
@@ -51,14 +52,22 @@ export default {
 .el-header {
   color: #3f3f3f;
   background-color: #545c64;
-  text-align: right;
   font-size: 12px;
   line-height: 60px;
+}
+.el-dropdown{
+  float: right;
 }
 .el-icon-s-custom {
   background-color: #fff;
 }
 .el-icon-s-custom:hover {
   cursor: pointer;
+}
+.title{
+  color: #fff;
+  font-size: 20px;
+  text-align: left;
+  line-height: 60px;
 }
 </style>
