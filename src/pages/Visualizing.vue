@@ -1,18 +1,16 @@
 <template>
   <div class="Echarts">
-    <div id="main" style="width: 600px;height: 400px;"></div>
+    <div id="main"  ></div>
   </div>
 </template>
  
 <script>
 import * as echarts from "echarts";
-import axios from 'axios'
 export default {
   name: 'Visualizing',
-  props:['course','type'],
+  props:['scoreInfo','type'],
   data() {
     return {
-      ruler:[],
     }
   },
   methods: {
@@ -21,45 +19,41 @@ export default {
       //配置图表
       var option = {
         title: {
-          text: '',
+          text: '成绩图',
         },
         tooltip: {},
         legend: {
-          data: ['销量']
         },
         xAxis: {
-          data: this.ruler
         },
         yAxis: {
+          data: this.scoreInfo.studentNames
         },
         series: [{
-          name: '销量',
           type: this.type,
-          data: [5,20,36,10,10,20]
+          data: this.scoreInfo.score,
+          barWidth: '20%',
         }]
       };
       myChart.setOption(option);
-    }
+    },
   },
   watch:{
-    course:{
+    scoreInfo:{
       handler(){
         this.myEcharts();
       }
     }
-  },mounted() {
-    axios({
-      method: "Get",
-      url: "http://localhost:8080/api2/score/ruler/",
-    }).then((response) => {
-      for (let index = 0; index < response.data.data.length; index++) {
-        this.ruler.push(response.data.data[index].rulerName)
-      }
-    })
   },
 }
 </script>
  
-<style>
- 
+<style scoped>
+.Echarts{
+  width: 90%;
+  background-color: #f0f0f0;
+}
+ #main{
+   height: 600px;
+ }
 </style>

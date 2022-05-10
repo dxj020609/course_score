@@ -11,7 +11,7 @@
     <el-button type="primary" class="operate" size="small" @click.native="openDialog">添加</el-button>
     <el-button type="danger" class="operate" size="small" v-show="delinfo !=''"  @click.native="delCourseInfo">删除</el-button>
     <el-button type="danger" class="operate" size="small" v-show="delinfo ==''" disabled @click.native="delCourseInfo">删除</el-button>  
-    <el-table class="table" :data="CourseTable" border  @selection-change="getDetInfo">
+    <el-table class="table" :data="testTable" border  @selection-change="getDetInfo">
         <el-table-column
         type="selection"
         width="40px"
@@ -78,6 +78,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <Pagin :page="page" :size="size" :table="CourseTable" :total="total" v-on:changeTable="changetestTable"></Pagin>
 
     <el-dialog title="添加课程" :visible.sync="dialogucOpen">
         <el-form >
@@ -93,11 +94,19 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="班级名" label-width="120px" v-show="courseValue!=''">
-                <el-select  placeholder="请选择授课班级" v-model="classValue" >
+                <el-select  placeholder="请选择授课班级" v-model="classValue" @change="getTutorInfo">
                     <el-option v-for="item in classInfo"
                     :key="item.classId"
                     :label="item.className"
                     :value="item.classId"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="导师名" label-width="120px" v-show="classValue!=''">
+                <el-select  placeholder="请选择导师" v-model="tutorvalue" >
+                    <el-option v-for="item in tutor"
+                    :key="item.teacherId"
+                    :label="item.teacherName"
+                    :value="item.teacherId"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -112,9 +121,10 @@
 <script>
 
 import axios from 'axios';
-// import axios from "axios";
+import Pagin from '../components/Pagin.vue'
 export default {
   name: "Course",
+  components:{Pagin},
   data() {
     return {
       //信息
@@ -125,9 +135,19 @@ export default {
       classInfo:[],
       classValue:"",
       delinfo:[],
+      testTable:[],
+      size:8,
+      page:1,
+      total:0,
+      tutor:[],
+      tutorvalue:'',
     };
   },
   methods:{
+    //分页调用的函数
+    changetestTable(value){
+      this.testTable = value;
+    },
     gotoProject(row) {
       this.$router.push({
             name:'project',
@@ -161,7 +181,7 @@ export default {
           }else{
             this.$message({
                 message: response.data.msg,
-                type: 'danger'
+                type: 'error'
             });
           }
       })
@@ -171,30 +191,49 @@ export default {
     },
     //添加课程信息
     submitService(){
-      axios({
+      if(this.tutorvalue !=""&&this.classValue!=""&&this.courseValue!=""){
+        axios({
           method:"POST",
-          url:"http://localhost:8080/api2/score/course/info/"+`${this.courseValue}`+"/"+`${this.classValue}`+"/"+'1'  //后续把1换成老师id
-      }).then((response)=>{
-          if (response.data.code == 200) {
-            this.$message({
-                message: response.data.msg,
-                type: 'success'
-            });
-            //添加成功后重新读值
-            axios({
-              method:"GET",
-              url:"http://localhost:8080/api2/score/course/info/1"
-            }).then((response)=>{
-                this.CourseTable = response.data.data
-            })
-          }else{
-            this.$message({
-                    message: response.data.msg,
-                    type: 'error'
-            });
+          url:"http://localhost:8080/api2/score/course/info/"+`${this.courseValue}`+"/"+`${this.classValue}`+"/"+'1',  //后续把1换成老师id
+          params:{
+            tutorId:this.tutorvalue
           }
+        }).then((response)=>{
+            if (response.data.code == 200) {
+              this.$message({
+                  message: response.data.msg,
+                  type: 'success'
+              });
+              //添加成功后重新读值
+              axios({
+                method:"GET",
+                url:"http://localhost:8080/api2/score/course/info/1"
+              }).then((response)=>{
+                  this.CourseTable = response.data.data
+              })
+            }else{
+              this.$message({
+                message: response.data.msg,
+                type: 'error'
+              });
+            }
+        })
+        this.dialogucOpen = false;
+      }else{
+        this.$message({
+          type:"error",
+          message:"请完成选择"
+        })
+      }
+    },
+    //查询所有导师
+    getTutorInfo(){
+      axios({
+        method:'GET',
+        url:"http://localhost:8080/api2/score/teacher/info/type"
+      }).then((response)=>{
+        this.tutor = response.data.data;
       })
-      this.dialogucOpen = false;
     },
     //查询所有未选择本门课的班级
     getclassInfo(){
@@ -228,7 +267,9 @@ export default {
           method:"GET",
           url:"http://localhost:8080/api2/score/course/info/1"
       }).then((response)=>{
-          this.CourseTable = response.data.data
+          this.CourseTable = response.data.data,
+          this.testTable = response.data.data.slice(0,this.size);
+          this.total = response.data.data.length;
       })
   },
   

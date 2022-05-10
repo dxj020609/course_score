@@ -12,7 +12,7 @@
         </el-breadcrumb>
       </div>
     </el-card>
-    <el-table class="table" :data="tableData" border >
+    <el-table class="table" :data="testTable" border >
       <el-table-column
         prop="studentId"
         label="学号"
@@ -114,21 +114,31 @@
         </template>
       </el-table-column>
     </el-table>
+    <Pagin :page="page" :size="size" :table="taskTable" :total="total" v-on:changeTable="changetestTable"></Pagin>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Pagin from '../components/Pagin.vue'
 export default {
   name: "ScoreTable",
   props:['taskId','projectId','teacherId','classId','courseId'],
+  components: { Pagin },
   data() {
     return {
       //信息
       tableData: [],
+      testTable:[],
+      size:8,
+      page:1,
+      total:0,
     };
   },
   methods: {
+    changetestTable(value){
+        this.testTable = value;
+    },
     goBack(){
       this.$router.push({
             name:'task',
@@ -145,7 +155,11 @@ export default {
             name:'score',
             params:{
               id:row.studentId,
-              taskId:this.taskId
+              taskId:this.taskId,
+              projectId:this.projectId,
+              teacherId:this.teacherId,
+              classId:this.classId,
+              courseId:this.courseId
             }
         })
     },
@@ -180,7 +194,9 @@ export default {
       method: "Get",
       url: "http://localhost:8080/api2/score/student/info/"+`${this.taskId}`,
     }).then((response) => {
-      this.tableData = response.data.data;  
+      this.tableData = response.data.data;
+      this.testTable = response.data.data.slice(0,this.size);
+      this.total = response.data.data.length;  
     });
   },
 };

@@ -1,7 +1,6 @@
 import VueRouter from "vue-router";
 import Task from '../pages/TaskList.vue'
 import CourseMyself from '../pages/CourseMySelf.vue'
-import Visualizing from '../pages/Visualizing.vue'
 import CourseGroup from '../pages/CourseGroup.vue'
 import UserLogin from '../components/UserLogin.vue'
 import EduIndex from '../components/EduIndex.vue'
@@ -11,7 +10,9 @@ import ScoreTable from '../pages/ScoreTable.vue'
 import Score from '../pages/Score.vue'
 import Course from '../pages/Course.vue'
 import Project from '../pages/Project.vue'
-import Analysis from '../pages/Analysis.vue'
+import ScoreSummary from '../pages/ScoreSummary.vue'
+import StudentScoreSummary from '../pages/StudentScoreSummary.vue'
+import Ruler from '../pages/Ruler.vue'
 
  const router = new VueRouter({
     routes:[
@@ -26,6 +27,12 @@ import Analysis from '../pages/Analysis.vue'
             component:EduIndex,
             children:[
                 {
+                    path:'ruler',
+                    name:'ruler',
+                    meta:{title:'评分管理'},
+                    component:Ruler,
+                },
+                {
                     path:'',
                     meta:{title:'主页'},
                     component:HomePage
@@ -36,16 +43,16 @@ import Analysis from '../pages/Analysis.vue'
                     component:CourseMyself
                 },
                 {
-                    path:'analysis',
+                    path:'scoreSummary',
+                    name:'scoreSummary',
                     meta:{title:'成绩分析'},
-                    component:Analysis,
-                    children:[
-                        {
-                            path:'all',
-                            meta:{title:'班级成绩分析'},
-                            component:Visualizing,
-                        }
-                    ]
+                    component:ScoreSummary,
+                },
+                {
+                    path:'studentscoreSummary',
+                    name:'studentscoreSummary',
+                    meta:{title:'成绩分析'},
+                    component:StudentScoreSummary,
                 },
                 {
                     path:'coursegroup',

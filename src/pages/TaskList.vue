@@ -11,7 +11,7 @@
           </el-breadcrumb>
       </div>
     </el-card>
-    <el-select v-model="taskTypechoose" placeholder="请选择任务类型" @change="queryByType">
+    <el-select v-model="taskTypechoose" placeholder="请选择任务类型" @change="queryByType" size="mini">
       <el-option label="请选择任务类型" value="all"></el-option>
       <el-option label="课前任务" :value="0"></el-option>
       <el-option label="课堂任务" :value="1"></el-option>
@@ -19,7 +19,7 @@
     </el-select>
     <el-button type="primary" class="operate" size="small" @click.native="openDialog">添加</el-button>
     <el-button type="warning" class="operate" size="small" @click.native="queryAllTask">查看所有任务</el-button>
-    <el-table class="table" :data="taskTable" border >
+    <el-table class="table" :data="testTable" border >
       <el-table-column  prop="taskName" label="任务名" align="center" :resizable="false" ></el-table-column>
       <el-table-column prop="taskType" label="任务类型" align="center" width="100px" :resizable="false" >
         <template slot-scope="scope">
@@ -46,6 +46,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <Pagin :page="page" :size="size" :table="taskTable" :total="total" v-on:changeTable="changetestTable"></Pagin>
+
     <el-dialog title="添加任务" :visible.sync="dialoguc">
       <el-form >
           <el-form-item label="任务名" label-width="120px">
@@ -110,9 +112,11 @@
 
 <script>
 import axios from 'axios';
+import Pagin from '../components/Pagin.vue'
 export default {
     name: "TaskList",
     props:['projectId','teacherId','classId','courseId'],
+    components: { Pagin },
     data() {
       return {
         taskTable: [],
@@ -128,9 +132,16 @@ export default {
         },
         frommodify:{},
         allTaskTable:[],
+        testTable:[],
+        size:8,
+        page:1,
+        total:0,
     }
   },
   methods:{
+    changetestTable(value){
+        this.testTable = value;
+    },
     queryAllTask(){
       this.queryTask = true
       axios.get("http://localhost:8080/api2/score/task/info/all/"+`${this.projectId}`).then((response)=>{
@@ -290,6 +301,8 @@ export default {
   mounted() {
       axios.get("http://localhost:8080/api2/score/task/info/"+`${this.projectId}`).then((response)=>{
         this.taskTable = response.data.data;
+        this.testTable = response.data.data.slice(0,this.size);
+        this.total = response.data.data.length;
       })
   },
 };

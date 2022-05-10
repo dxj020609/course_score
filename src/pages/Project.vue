@@ -12,7 +12,7 @@
         </el-card>
         <el-button type="primary" class="operate" size="small" @click.native="openDialog">添加</el-button>
         <el-input placeholder="搜索" size="small" class="search" v-model="searchInput" @change = "searchProjectName"></el-input>
-        <el-table class="table" :data="ProjectTable" border >
+        <el-table class="table" :data="testTable" border >
             <el-table-column
                 prop="projectId"
                 label="项目名"
@@ -55,6 +55,7 @@
                     </template>
             </el-table-column>
         </el-table>
+        <Pagin :page="page" :size="size" :table="ProjectTable" :total="total" v-on:changeTable="changetestTable"></Pagin>
 
         <el-dialog title="添加项目" :visible.sync="dialogucOpen">
             <el-form >
@@ -83,8 +84,10 @@
 
 <script>
 import axios from 'axios'
+import Pagin from '../components/Pagin.vue'
 export default {
     name:"Project",
+    components: { Pagin },
     props:['teacherId','classId','courseId'],
     data() {
         return {
@@ -94,9 +97,16 @@ export default {
             ProjectInput:"",
             projectId:0,
             searchInput:"",
+            testTable:[],
+            size:8,
+            page:1,
+            total:0,
         }
     },
     methods: {
+        changetestTable(value){
+            this.testTable = value;
+        },
         gotoTask(row){
             this.$router.push({
             name:'task',
@@ -219,7 +229,9 @@ export default {
     },
     mounted() {
         axios.get("http://localhost:8080/api2/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
-            this.ProjectTable = response.data.data
+            this.ProjectTable = response.data.data;
+            this.testTable = response.data.data.slice(0,this.size);
+            this.total = response.data.data.length;
         })
     },
 

@@ -52,7 +52,7 @@
 import axios from 'axios'
 export default {
     name:"Score",
-    props:['id','taskId'],
+    props:['id','taskId','projectId','teacherId','classId','courseId'],
     data() {
         return {
             score:[],
@@ -76,6 +76,12 @@ export default {
                 });
                 this.$router.push({
                     name:'scoreTable',
+                    params:{
+                        projectId:this.projectId,
+                        teacherId:this.teacherId,
+                        classId:this.classId,
+                        courseId:this.courseId
+                    }
                 })
             });
         },
