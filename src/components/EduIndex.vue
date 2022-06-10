@@ -12,7 +12,7 @@
             </el-aside>
 
             <!-- 显示内容,插槽内容 -->
-            <el-main >
+            <el-main style="background-color: white">
                 <router-view></router-view>
             </el-main>
         </el-container>
@@ -32,10 +32,8 @@ export default {
 <style scope>
 .el-aside{
     height:668px;
-    overflow: hidden;
 }
 .el-main{
     height: 668px;
-    overflow: hidden;
 }
 </style>

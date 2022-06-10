@@ -8,7 +8,7 @@
         </div>
         <div style="margin:20px 0">
             <el-descriptions>
-                <el-descriptions-item label="学生姓名">{{studentInfo.StudentName}}</el-descriptions-item>
+                <el-descriptions-item label="学生姓名">{{studentInfo.studentName}}</el-descriptions-item>
                 <el-descriptions-item label="性别">
                     <span v-if="!studentInfo.sex">男</span>
                     <span v-if="studentInfo.sex">女</span>

@@ -64,6 +64,10 @@
     <el-menu-item index="9" v-if="identity == 'admin'">
         <router-link to="/index/courseadmin"><i class="el-icon-reading"></i>课程管理</router-link>
     </el-menu-item>
+    <!-- 所有人都有的 -->
+    <el-menu-item index="10" >
+        <router-link to="/showScore"><i class="el-icon-reading"></i>小组评分</router-link>
+    </el-menu-item>
 </el-menu>
 </template>
 
@@ -74,6 +78,13 @@ export default {
       return {
           identity:'',
       }
+  },
+  methods: {
+    gotoScore(){
+        this.$router.push({
+            name:'showScore',
+        })
+    }
   },
   mounted() {
       this.identity = JSON.parse(localStorage.getItem("identity"));
@@ -101,4 +112,5 @@ export default {
 .info{
     text-decoration: none;
 }
+.show{border: none;}
 </style>

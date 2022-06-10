@@ -76,7 +76,7 @@ export default {
                 if(valid){
                     axios({
                         method:"get",
-                        url:this.$URL.mqttUrl+"/score/login",
+                        url:"http://localhost:8888/score/login",
                         params:{
                             userName:this.formdata.username,
                             password:this.formdata.password,

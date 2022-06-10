@@ -18,6 +18,8 @@ import courseadmin from '../pages/CourseAdmin.vue'
 import classadmin from '../pages/ClassAdmin.vue'
 import studentadmin from '../pages/StudentAdmin.vue'
 import teacherAdmin from '../pages/TeacherAdmin.vue'
+import ShowScore from '../components/ShowScore.vue'
+import ShowTable from '../components/ShowTable.vue'
 
  const router = new VueRouter({
     routes:[
@@ -28,6 +30,7 @@ import teacherAdmin from '../pages/TeacherAdmin.vue'
         },
         {
             path:'/index',
+            name:'index',
             meta:{title:'主页'},
             component:EduIndex,
             children:[
@@ -135,10 +138,21 @@ import teacherAdmin from '../pages/TeacherAdmin.vue'
                     name:"teacherAdmin",
                     meta:{title:"教师管理"},
                     component:teacherAdmin
-                }
+                },
             ]
+        },
+        {
+            path:'/showScore',
+            name:'showScore',
+            meta:{title:"PK界面"},
+            component:ShowScore
+        },
+        {
+            path:'/showTable',
+            name:'showTable',
+            meta:{title:"分数界面"},
+            component:ShowTable
         }
-        
     ]
 })
 

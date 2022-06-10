@@ -27,7 +27,7 @@ import axios from 'axios';
 var myChart={dispose(){}};
 export default {
   name: 'Analysis',
-  props:['studentInfo','type',"taskType"],
+  props:['studentInfo','type',"taskType","projectId"],
   data() {
     return {
         studentId:'',
@@ -68,7 +68,8 @@ export default {
         method:"get",
         url:this.$URL.mqttUrl+"/score/info/get/list/"+`${this.taskType}`,
         params:{
-          studentId:id
+          studentId:id,
+          projectId:this.projectId
         }
       }).then((response)=>{
         this.list = response.data.data

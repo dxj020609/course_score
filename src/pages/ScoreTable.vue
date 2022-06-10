@@ -16,7 +16,6 @@
       <el-table-column
         prop="studentId"
         label="学号"
-        width="50px"
         align="center"
         :resizable="false"
       ></el-table-column>

@@ -84,7 +84,7 @@ export default {
         this.taskId="",
         axios({
             method:"get",
-            url:this.$URL.mqttUrl+"/score/project/info/"+`${this.courseId}`+"/"+`${this.classId}`+"/"+`1`  //后续把这个换成当前登录的id
+            url:this.$URL.mqttUrl+"/score/project/info/"+`1`+"/"+`${this.classId}`+'/'+`${this.courseId}`  //后续把这个换成当前登录的id
         }).then((response)=>{
             this.projectInfo = response.data.data
         })
