@@ -1,6 +1,8 @@
 <template>
   <div class="Echarts">
-    <div id="main"  ></div>
+    <div id="main"  >
+      <el-empty description="请先完成选择" v-show="this.scoreInfo==''"></el-empty>
+    </div>
   </div>
 </template>
  
@@ -51,9 +53,9 @@ export default {
 <style scoped>
 .Echarts{
   width: 90%;
-  background-color: #f0f0f0;
 }
  #main{
-   height: 600px;
+   width: 100%;
+   height: 450px;
  }
 </style>

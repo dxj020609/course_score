@@ -162,7 +162,7 @@ export default {
       //调用删除的接口
       axios({
         method:"DELETE",
-        url:"http://localhost:8080/api2/score/course/info/del",
+        url:this.$URL.mqttUrl+"/score/course/info/del",
         data:{
           delList:this.delinfo
         }
@@ -174,16 +174,18 @@ export default {
             });
             axios({
               method:"GET",
-              url:"http://localhost:8080/api2/score/course/info/1"
+              url:this.$URL.mqttUrl+"/score/course/info/1"
             }).then((response)=>{
                 this.CourseTable = response.data.data
+                this.testTable = response.data.data.slice(0,this.size);
+                this.total = response.data.data.length;
             })
           }else{
             this.$message({
                 message: response.data.msg,
                 type: 'error'
             });
-          }
+          } 
       })
     },
     getDetInfo(delarr){
@@ -194,7 +196,7 @@ export default {
       if(this.tutorvalue !=""&&this.classValue!=""&&this.courseValue!=""){
         axios({
           method:"POST",
-          url:"http://localhost:8080/api2/score/course/info/"+`${this.courseValue}`+"/"+`${this.classValue}`+"/"+'1',  //后续把1换成老师id
+          url:this.$URL.mqttUrl+"/score/course/info/"+`${this.courseValue}`+"/"+`${this.classValue}`+"/"+'1',  //后续把1换成老师id
           params:{
             tutorId:this.tutorvalue
           }
@@ -207,9 +209,11 @@ export default {
               //添加成功后重新读值
               axios({
                 method:"GET",
-                url:"http://localhost:8080/api2/score/course/info/1"
+                url:this.$URL.mqttUrl+"/score/course/info/1"
               }).then((response)=>{
-                  this.CourseTable = response.data.data
+                this.CourseTable = response.data.data
+                this.testTable = response.data.data.slice(0,this.size);
+                this.total = response.data.data.length;
               })
             }else{
               this.$message({
@@ -218,6 +222,7 @@ export default {
               });
             }
         })
+        this.tutorvalue = '',
         this.dialogucOpen = false;
       }else{
         this.$message({
@@ -230,7 +235,7 @@ export default {
     getTutorInfo(){
       axios({
         method:'GET',
-        url:"http://localhost:8080/api2/score/teacher/info/type"
+        url:this.$URL.mqttUrl+"/score/teacher/info/type"
       }).then((response)=>{
         this.tutor = response.data.data;
       })
@@ -239,7 +244,7 @@ export default {
     getclassInfo(){
       axios({
           method:"GET",
-          url:"http://localhost:8080/api2/score/class/info/"+`${this.courseValue}`
+          url:this.$URL.mqttUrl+"/score/class/info/"+`${this.courseValue}`
       }).then((response)=>{
           this.classInfo = response.data.data
       })
@@ -248,7 +253,7 @@ export default {
       //查询所有课程
       axios({
           method:"GET",
-          url:"http://localhost:8080/api2/score/course/info"
+          url:this.$URL.mqttUrl+"/score/course/info"
       }).then((response)=>{
           this.courseInfo = response.data.data
       })
@@ -265,7 +270,7 @@ export default {
   mounted() {
       axios({
           method:"GET",
-          url:"http://localhost:8080/api2/score/course/info/1"
+          url:this.$URL.mqttUrl+"/score/course/info/1"
       }).then((response)=>{
           this.CourseTable = response.data.data,
           this.testTable = response.data.data.slice(0,this.size);

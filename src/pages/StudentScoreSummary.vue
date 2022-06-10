@@ -4,7 +4,7 @@
             <div slot="header">
                 <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item>成绩查询</el-breadcrumb-item></el-breadcrumb>
+                <el-breadcrumb-item>学生成绩对比</el-breadcrumb-item></el-breadcrumb>
             </div>
         </el-card>
         <div class="chooses">
@@ -82,7 +82,7 @@ export default {
         getStudentInfo(){
             axios({
                 method:"get",
-                url:"http://localhost:8080/api2/project/student/info/all/"+`${this.projectId}`,
+                url:this.$URL.mqttUrl+"/project/student/info/all/"+`${this.projectId}`,
             }).then((response)=>{
                 this.studentInfo = response.data.data
             })
@@ -95,7 +95,7 @@ export default {
             this.studentInfo="",
             axios({
                 method:"get",
-                url:"http://localhost:8080/api2/score/project/info/"+`${this.courseId}`+"/"+`${this.classId}`+"/"+`1`  //后续把这个换成当前登录的id
+                url:this.$URL.mqttUrl+"/score/project/info/"+`${this.courseId}`+"/"+`${this.classId}`+"/"+`1`  //后续把这个换成当前登录的id
             }).then((response)=>{
                 this.projectInfo = response.data.data
             })
@@ -109,7 +109,7 @@ export default {
             this.studentInfo="",
             axios({
                 method:"get",
-                url:"http://localhost:8080/api2/score/class/info/all/"+`${this.courseId}`
+                url:this.$URL.mqttUrl+"/score/class/info/all/"+`${this.courseId}`
             }).then((response)=>{
                 this.classInfo = response.data.data
             })
@@ -119,7 +119,7 @@ export default {
         //获取课程信息
         axios({
             method:"GET",
-            url:"http://localhost:8080/api2/score/course/info/all/1"
+            url:this.$URL.mqttUrl+"/score/course/info/all/1"
         }).then((response)=>{
             this.courseInfo = response.data.data
         })

@@ -1,7 +1,5 @@
 import VueRouter from "vue-router";
 import Task from '../pages/TaskList.vue'
-import CourseMyself from '../pages/CourseMySelf.vue'
-import CourseGroup from '../pages/CourseGroup.vue'
 import UserLogin from '../components/UserLogin.vue'
 import EduIndex from '../components/EduIndex.vue'
 import HomePage from '../pages/HomePage.vue'
@@ -13,6 +11,13 @@ import Project from '../pages/Project.vue'
 import ScoreSummary from '../pages/ScoreSummary.vue'
 import StudentScoreSummary from '../pages/StudentScoreSummary.vue'
 import Ruler from '../pages/Ruler.vue'
+import GroupSummary from '../pages/GroupSummary.vue'
+import SelfScore from '../pages/SelfScore.vue'
+import info from '../pages/info.vue'
+import courseadmin from '../pages/CourseAdmin.vue'
+import classadmin from '../pages/ClassAdmin.vue'
+import studentadmin from '../pages/StudentAdmin.vue'
+import teacherAdmin from '../pages/TeacherAdmin.vue'
 
  const router = new VueRouter({
     routes:[
@@ -38,11 +43,6 @@ import Ruler from '../pages/Ruler.vue'
                     component:HomePage
                 },
                 {
-                    path:'coursemyself',
-                    meta:{title:'自我评分'},
-                    component:CourseMyself
-                },
-                {
                     path:'scoreSummary',
                     name:'scoreSummary',
                     meta:{title:'成绩分析'},
@@ -53,11 +53,6 @@ import Ruler from '../pages/Ruler.vue'
                     name:'studentscoreSummary',
                     meta:{title:'成绩分析'},
                     component:StudentScoreSummary,
-                },
-                {
-                    path:'coursegroup',
-                    meta:{title:'小组评分'},
-                    component:CourseGroup
                 },
                 {
                     path:'Teacherindex',
@@ -97,6 +92,49 @@ import Ruler from '../pages/Ruler.vue'
                     meta:{title:"任务信息"},
                     component:Task,
                     props:true
+                },
+                {
+                    path:"grouosummary",
+                    name:"GroupSummary",
+                    meta:{title:"小组成绩"},
+                    component:GroupSummary,
+                },
+                // 学生端
+                {
+                    path:"selfscore",
+                    name:"SelfScore",
+                    meta:{title:"评分列表"},
+                    component:SelfScore
+                },
+                {
+                    path:"info",
+                    name:"info",
+                    meta:{title:"个人信息"},
+                    component:info
+                },
+                {
+                    path:"courseadmin",
+                    name:"courseadmin",
+                    meta:{title:"课程管理"},
+                    component:courseadmin
+                },
+                {
+                    path:"classadmin",
+                    name:"classadmin",
+                    meta:{title:"班级管理"},
+                    component:classadmin
+                },
+                {
+                    path:"studentAdmin",
+                    name:"studentAdmin",
+                    meta:{title:"学生管理"},
+                    component:studentadmin
+                },
+                {
+                    path:"teacherAdmin",
+                    name:"teacherAdmin",
+                    meta:{title:"教师管理"},
+                    component:teacherAdmin
                 }
             ]
         }
@@ -105,7 +143,6 @@ import Ruler from '../pages/Ruler.vue'
 })
 
 router.afterEach((to) => {
-    // to and from are both route objects.
     if(to.meta.title){
         document.title = to.meta.title
     }else{

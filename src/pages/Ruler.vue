@@ -15,9 +15,9 @@
         <el-table-column prop="rulerId" label="规则号" align="center" :resizable="false" ></el-table-column>
         <el-table-column prop="rulerName" label="规则名"  align="center" :resizable="false" ></el-table-column>
         <el-table-column prop="rulerPercent" label="规则占比" align="center" :resizable="false" ></el-table-column>
-        <el-table-column prop="disabebled" label="是否禁用" align="center" :resizable="false">
-            <template slot-scope="scope">
-                <el-switch active-text="启用" v-model="scope.row.disabled" inactive-text="禁用"></el-switch>
+        <el-table-column prop="disabled" label="禁用" align="center" :resizable="false">
+            <template slot-scope="scope">                
+                <el-switch active-text="禁用" :active-value="1" :inactive-value="0" disabled v-model="scope.row.disabled"  inactive-text="启用"></el-switch>
             </template>
         </el-table-column>
         <el-table-column label="操作" align="center" :resizable="false">
@@ -36,8 +36,8 @@
             <el-form-item label="规则占比" label-width="120px">
                 <el-input-number size="mini" :step="0.1" :max="1" :min="0" v-model="addRuler.RulerPercent"></el-input-number>
             </el-form-item>
-            <el-form-item label="默认禁用" label-width="120px">                
-                <el-switch active-text="启用" v-model="addRuler.disabled" inactive-text="禁用"></el-switch>
+            <el-form-item label="禁用" label-width="120px">                
+                <el-switch active-text="禁用" v-model="addRuler.disabled" :active-value="1" :inactive-value="0" inactive-text="启用"></el-switch>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -54,8 +54,8 @@
             <el-form-item label="规则占比" label-width="120px">
                 <el-input-number size="mini" :step="0.1" :max="1" :min="0" v-model="Update.rulerPercent"></el-input-number>
             </el-form-item>
-            <el-form-item label="默认禁用" label-width="120px">                
-                <el-switch active-text="启用" v-model="Update.disabled" inactive-text="禁用"></el-switch>
+            <el-form-item label="禁用" label-width="120px">                
+                <el-switch active-text="禁用" v-model="Update.disabled" :active-value="1" :inactive-value="0" inactive-text="启用"></el-switch>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -92,37 +92,56 @@ export default {
     },
     methods: {
         clearDialogmodify(){
+            this.total = this.rulerTable.length;
             this.dialogucOpenModify = false;
         },
+        //修改规则内容
         modifyRuler(){
-            axios({
+            let sum = 0;
+            for (let index = 0; index < this.rulerTable.length; index++) {
+                if(this.rulerTable[index].disabled>0&&this.rulerTable[index].rulerId!=this.Update.rulerId){
+                    sum += this.rulerTable[index].rulerPercent
+                }
+            }
+            if((this.Update.rulerPercent<1-sum)||this.Update.rulerPercent == 0||this.Update.disabled ==0){
+                axios({
                 method:'put',
-                url:"http://localhost:8080/api2/score/ruler/put/"+`${this.Update.rulerId}`,
+                url:this.$URL.mqttUrl+"/score/ruler/put/"+`${this.Update.rulerId}`,
                 params:{
-                    rulerName:this.Update.rulerName
+                    rulerName:this.Update.rulerName,
+                    rulerPercent:this.Update.rulerPercent,
+                    disabled:this.Update.disabled,
                 }
-            }).then((response)=>{
-                if(response.data.code == 200){
-                    this.$message({
-                        type:"success",
-                        message:response.data.msg
-                    })
-                }else{
-                    this.$message({
-                        type:"error",
-                        message:response.data.msg
-                    })
-                }
-                this.rulerTable = response.data.data;
-                this.clearDialogmodify();
-            })
+                }).then((response)=>{
+                    if(response.data.code == 200){
+                        this.$message({
+                            type:"success",
+                            message:response.data.msg
+                        })
+                    }else{
+                        this.$message({
+                            type:"error",
+                            message:response.data.msg
+                        })
+                    }
+                    this.rulerTable = response.data.data;
+                    this.testTable = this.rulerTable.slice(0,this.size);
+                    this.clearDialogmodify();
+                })
+            }else{
+                this.$message({
+                    type:'error',
+                    message:'规则占比总和不能超过1'
+                })
+            }
             
         },
         openModifyDialog(row){
+            this.total--;
             this.dialogucOpenModify = true;
             axios({
                 method:'get',
-                url:"http://localhost:8080/api2/score/ruler/info/"+`${row}`
+                url:this.$URL.mqttUrl+"/score/ruler/info/"+`${row}`
             }).then((response)=>{
                 this.Update = response.data.data;
             })
@@ -134,7 +153,7 @@ export default {
         //调用删除的接口
         axios({
             method:"DELETE",
-            url:"http://localhost:8080/api2/score/ruler/info/del",
+            url:this.$URL.mqttUrl+"/score/ruler/info/del",
             data:{
                 delList:this.delinfo
             }
@@ -150,7 +169,7 @@ export default {
                     type: 'error'
                 });
             }
-            this.rulerTable = response.data.data
+            this.rulerTable = response.data.data;
             this.delinfo = [];
             this.testTable = response.data.data.slice(0,this.size);
             this.total = response.data.data.length;
@@ -160,7 +179,7 @@ export default {
         additionRuler(){
             axios({
                 method:"POST",
-                url:"http://localhost:8080/api2/score/ruler/add/"+`${this.addRuler.RulerName}`,
+                url:this.$URL.mqttUrl+"/score/ruler/add/"+`${this.addRuler.RulerName}`,
                 params:{
                     rulerPercent:this.addRuler.RulerPercent,
                     disabled:this.addRuler.disabled==true?1:0
@@ -199,8 +218,8 @@ export default {
     },
     mounted(){
         axios({
-            url:"http://localhost:8080/api2/score/ruler/",
-            methods:"get",
+            url:this.$URL.mqttUrl+"/score/ruler/",
+            method:"get",
         }).then((response)=>{
             this.rulerTable = response.data.data;
             this.testTable = response.data.data.slice(0,this.size);

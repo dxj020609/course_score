@@ -15,13 +15,13 @@
         <el-table class="table" :data="testTable" border >
             <el-table-column
                 prop="projectId"
-                label="项目名"
+                label="项目号"
                 align="center"
                 :resizable="false"
             ></el-table-column>
             <el-table-column
                 prop="projectName"
-                label="项目号"
+                label="项目名"
                 align="center"
                 :resizable="false"
             >
@@ -126,7 +126,7 @@ export default {
         //模糊搜索
         searchProjectName(){
             if(this.searchInput != ""){
-                axios.get("http://localhost:8080/api2/score/project/info/search/"+`${this.searchInput}`).then((response)=>{
+                axios.get(this.$URL.mqttUrl+"/score/project/info/search/"+`${this.searchInput}`).then((response)=>{
                     if(response.data.code==200){
                         this.ProjectTable = response.data.data
                         this.$message({
@@ -141,7 +141,7 @@ export default {
                     }
                 })
             }else{
-                axios.get("http://localhost:8080/api2/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
+                axios.get(this.$URL.mqttUrl+"/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
                     this.ProjectTable = response.data.data
                 })
             }
@@ -162,9 +162,9 @@ export default {
         //增加项目
         submitService(){
             //axios请求提交参数是addProject和teacherId和classId
-            axios.post("http://localhost:8080/api2/score/project/info/add/"+`${this.ProjectInput}`+"/"+`${this.teacherId}`+"/"+`${this.courseId}`+"/"+`${this.classId}`).then((response)=>{
+            axios.post(this.$URL.mqttUrl+"/score/project/info/add/"+`${this.ProjectInput}`+"/"+`${this.teacherId}`+"/"+`${this.courseId}`+"/"+`${this.classId}`).then((response)=>{
                 if(response.data.code==200){
-                    axios.get("http://localhost:8080/api2/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
+                    axios.get(this.$URL.mqttUrl+"/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
                         this.ProjectTable = response.data.data,
                         this.updatedialoguc = false;
                     })
@@ -185,9 +185,9 @@ export default {
         //修改项目
         updateService(){
             //axios请求提交参数是ProjectId
-            axios.put("http://localhost:8080/api2/score/project/info/put/"+`${this.projectId}`+"/"+`${this.ProjectInput}`).then((response)=>{
+            axios.put(this.$URL.mqttUrl+"/score/project/info/put/"+`${this.projectId}`+"/"+`${this.ProjectInput}`).then((response)=>{
                 if(response.data.code==200){
-                    axios.get("http://localhost:8080/api2/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
+                    axios.get(this.$URL.mqttUrl+"/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
                         this.ProjectTable = response.data.data,
                         this.updatedialoguc = false;
                     })
@@ -209,9 +209,9 @@ export default {
         //
         delProject(id){
             //删除项目
-            axios.delete("http://localhost:8080/api2/score/project/info/del/"+`${id}`).then((response)=>{
+            axios.delete(this.$URL.mqttUrl+"/score/project/info/del/"+`${id}`).then((response)=>{
                 if(response.data.code==200){
-                    axios.get("http://localhost:8080/api2/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
+                    axios.get(this.$URL.mqttUrl+"/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
                         this.ProjectTable = response.data.data
                     })
                     this.$message({
@@ -228,7 +228,7 @@ export default {
         },
     },
     mounted() {
-        axios.get("http://localhost:8080/api2/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
+        axios.get(this.$URL.mqttUrl+"/score/project/info/"+`${this.teacherId}`+"/"+`${this.classId}`+"/"+`${this.courseId}`).then((response)=>{
             this.ProjectTable = response.data.data;
             this.testTable = response.data.data.slice(0,this.size);
             this.total = response.data.data.length;

@@ -144,7 +144,7 @@ export default {
     },
     queryAllTask(){
       this.queryTask = true
-      axios.get("http://localhost:8080/api2/score/task/info/all/"+`${this.projectId}`).then((response)=>{
+      axios.get(this.$URL.mqttUrl+"/score/task/info/all/"+`${this.projectId}`).then((response)=>{
         this.allTaskTable = response.data.data;
       })
     },
@@ -173,7 +173,7 @@ export default {
     submitmodify(){
       axios({
         method:"PUT",
-        url:"http://localhost:8080/api2/score/task/info/put/"+`${this.frommodify.taskId}`,
+        url:this.$URL.mqttUrl+"/score/task/info/put/"+`${this.frommodify.taskId}`,
         params:{
           taskName:this.frommodify.taskName,
           taskType:this.frommodify.taskType,
@@ -185,7 +185,7 @@ export default {
             message: response.data.msg,
             type: 'success'
           })
-          axios.get("http://localhost:8080/api2/score/task/info/"+`${this.projectId}`).then((response)=>{
+          axios.get(this.$URL.mqttUrl+"/score/task/info/"+`${this.projectId}`).then((response)=>{
             this.taskTable = response.data.data;
           })
         }else{
@@ -205,13 +205,13 @@ export default {
       this.modifydialoguc = false;
     },
     delTask(row){
-      axios.delete("http://localhost:8080/api2/score/task/info/Del/"+`${row}`).then((response)=>{
+      axios.delete(this.$URL.mqttUrl+"/score/task/info/Del/"+`${row}`).then((response)=>{
         if(response.data.code == 200){
           this.$message({
             message: response.data.msg,
             type: 'success'
           })
-          axios.get("http://localhost:8080/api2/score/task/info/"+`${this.projectId}`).then((response)=>{
+          axios.get(this.$URL.mqttUrl+"/score/task/info/"+`${this.projectId}`).then((response)=>{
             this.taskTable = response.data.data;
           })
         }else{
@@ -231,7 +231,7 @@ export default {
       }else{
         axios({
           method:'POST',
-          url:"http://localhost:8080/api2/score/task/info/add/"+`${this.projectId}`,
+          url:this.$URL.mqttUrl+"/score/task/info/add/"+`${this.projectId}`,
           params:{
             taskName:this.fromInput.taskName,
             taskType:this.fromInput.taskType,
@@ -240,7 +240,7 @@ export default {
           }
         }).then((response)=>{
           if(response.data.code == 200){
-            axios.get("http://localhost:8080/api2/score/task/info/"+`${this.projectId}`).then((response)=>{
+            axios.get(this.$URL.mqttUrl+"/score/task/info/"+`${this.projectId}`).then((response)=>{
               this.taskTable = response.data.data;
             })
             this.$message({
@@ -266,7 +266,7 @@ export default {
     },
     queryByType(){
       if(this.taskTypechoose =="all"){
-        axios.get("http://localhost:8080/api2/score/task/info/"+`${this.projectId}`).then((response)=>{
+        axios.get(this.$URL.mqttUrl+"/score/task/info/"+`${this.projectId}`).then((response)=>{
           if(response.data.code == 200){
             this.taskTable = response.data.data;
             this.$message({
@@ -281,7 +281,7 @@ export default {
           }
         })
       }else{
-        axios.get("http://localhost:8080/api2/score/task/info/type/"+`${this.taskTypechoose}`,{params:{projectId:this.projectId}}).then((response)=>{
+        axios.get(this.$URL.mqttUrl+"/score/task/info/type/"+`${this.taskTypechoose}`,{params:{projectId:this.projectId}}).then((response)=>{
           if(response.data.code == 200){
             this.taskTable = response.data.data;
             this.$message({
@@ -299,7 +299,7 @@ export default {
     },
   },
   mounted() {
-      axios.get("http://localhost:8080/api2/score/task/info/"+`${this.projectId}`).then((response)=>{
+      axios.get(this.$URL.mqttUrl+"/score/task/info/"+`${this.projectId}`).then((response)=>{
         this.taskTable = response.data.data;
         this.testTable = response.data.data.slice(0,this.size);
         this.total = response.data.data.length;

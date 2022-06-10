@@ -2,9 +2,9 @@
   <div>
     <el-empty description="请先完成选择" v-show="!this.studentInfo!=''"></el-empty>
     <el-container v-show="this.studentInfo!=''">
-        <el-aside width="200px">
+        <el-aside width="200px" class="student-aside">
             <el-row>
-              <b>
+              <b >
                 学生姓名
               </b>
             </el-row>
@@ -66,7 +66,7 @@ export default {
     getStudentId(id){
       axios({
         method:"get",
-        url:"http://localhost:8080/api2/score/info/get/list/"+`${this.taskType}`,
+        url:this.$URL.mqttUrl+"/score/info/get/list/"+`${this.taskType}`,
         params:{
           studentId:id
         }
@@ -110,5 +110,9 @@ export default {
  .el-aside{
    height: 500px;
    overflow: auto;
+ }
+ .student-aside{
+   background-color: #eee;
+   text-align: center;
  }
 </style>

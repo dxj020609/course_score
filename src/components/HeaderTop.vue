@@ -3,13 +3,12 @@
     <el-header class="el-header">
       <span class="title">学生成绩综合评估分析系统</span>
       <el-dropdown class="el-dropdown">
-        <i class="el-icon-s-custom" style="margin-right: 15px"></i>
+        <el-avatar icon="el-icon-user-solid" class="avatar"></el-avatar>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>查看</el-dropdown-item>
+          <el-dropdown-item @click.native="info">查看</el-dropdown-item>
           <el-dropdown-item  @click.native="exit">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <span>{{user.studentName}}</span>
     </el-header>
   </div>
 </template>
@@ -25,8 +24,12 @@ export default {
   },
   methods: {
     exit(){
-      sessionStorage.removeItem('user')
+      localStorage.removeItem('userName')
+      localStorage.removeItem('identity')
       this.$router.push('/')
+    },
+    info(){
+      this.$router.push('/index/info')
     }
   },
   mounted() {
@@ -39,6 +42,14 @@ export default {
     // }).then((response)=>{
     //   this.user = response.data
     // })
+    if(localStorage.getItem('userName')== null){
+        this.$router.push('/')
+        this.$message({
+          type:"error",
+          message:"请先登录"
+        })
+    }
+    this.user = {username:JSON.parse(localStorage.getItem('userName')),identity:JSON.parse(localStorage.getItem("identity"))}
   },
 };
 </script>
@@ -69,5 +80,8 @@ export default {
   font-size: 20px;
   text-align: left;
   line-height: 60px;
+}
+.avatar{
+  margin-top: 10px;
 }
 </style>

@@ -4,11 +4,10 @@ import App from './App.vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-
 //导入router
 import VueRouter from 'vue-router';
 import router from './router'
-
+import global from './utils/api'
 
 Vue.config.productionTip = false
 
@@ -16,6 +15,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI);
 //使用router
 Vue.use(VueRouter);
+
+Vue.prototype.$URL = global
 
 new Vue({
   render: h => h(App),

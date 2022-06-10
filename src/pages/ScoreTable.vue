@@ -166,11 +166,11 @@ export default {
     del(Id) {
       axios({
         method: "DELETE",
-        url: "http://localhost:8080/api2/score/info/del/" + `${Id}`,
+        url: this.$URL.mqttUrl+"/score/info/del/" + `${Id}`,
       }).then((response) => {
         axios({
           method: "Get",
-          url: "http://localhost:8080/api2/score/student/info/"+`${this.taskId}`,
+          url: this.$URL.mqttUrl+"/score/student/info/"+`${this.taskId}`,
         }).then((response) => {
           console.log(response);
           this.tableData = response.data.data; 
@@ -192,7 +192,7 @@ export default {
   mounted() {
     axios({
       method: "Get",
-      url: "http://localhost:8080/api2/score/student/info/"+`${this.taskId}`,
+      url: this.$URL.mqttUrl+"/score/student/info/"+`${this.taskId}`,
     }).then((response) => {
       this.tableData = response.data.data;
       this.testTable = response.data.data.slice(0,this.size);

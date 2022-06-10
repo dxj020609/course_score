@@ -36,5 +36,6 @@ export default {
 }
 .el-main{
     height: 668px;
+    overflow: hidden;
 }
 </style>

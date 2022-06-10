@@ -64,7 +64,7 @@ export default {
         save(){
             axios({
                 method: "POST",
-                url: "http://localhost:8080/api2/score/info/add/"+ `${this.score}`,
+                url: this.$URL.mqttUrl+"/score/info/add/"+ `${this.score}`,
                 params:{
                     taskId:this.taskId,
                     studentId:this.id
@@ -92,7 +92,7 @@ export default {
     mounted() {
         axios({
             method: "Get",
-            url: "http://localhost:8080/api2/score/ruler/",
+            url: this.$URL.mqttUrl+"/score/ruler/",
         }).then((response) => { 
             this.Ruler = response.data.data;
             let arr = [];
@@ -102,7 +102,7 @@ export default {
             this.score = arr
             axios({
                 method:"GET",
-                url:"http://localhost:8080/api2/score/info/"+`${this.id}`,
+                url:this.$URL.mqttUrl+"/score/info/"+`${this.id}`,
                 params:{
                     taskId:this.taskId
                 }

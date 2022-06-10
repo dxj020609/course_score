@@ -1,20 +1,24 @@
 <template>
     <div id="User_login">
-        <div style="margin: 20px;">
-            <el-form ref="formdata" :model="formdata" :rules="rules" label-width="80px" class="login-box" status-icon show-message>
-                <h3 class="login-title">欢迎登录</h3>
-                <el-form-item label="学号" prop="username" >
-                    <el-input type="text" v-model.number="formdata.username"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-input type="password" v-model="formdata.password" @keydown.enter.native="submit('formdata')"></el-input>
-                </el-form-item>
-                <el-form-item >
-                    <el-button type="primary" @click="submit('formdata')">登录</el-button>
-                    <el-button type="info" @click="clearInput('formdata')" style="margin-left:75px">重置</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
+        <el-form ref="formdata" :model="formdata" :rules="rules" class="login-box" status-icon show-message >
+            <h3 class="login-title">学生成绩综合评估分析系统</h3>
+            <el-form-item  prop="username" class="el-form-item">
+                    <el-input  type="text"  v-model.number="formdata.username" placeholder="账号">
+                    <i slot="prefix" class="el-icon-user-solid logo"></i>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-input type="password"  v-model="formdata.password" placeholder="密码" @keydown.enter.native="submit('formdata')">
+                    <i slot="prefix" class="el-icon-lock logo"></i>
+                </el-input>
+            </el-form-item>
+            <el-form-item >
+                <el-button type="primary" @click="submit('formdata')" class="login">
+                    <span v-if="!loading">登 录</span>
+                    <span v-else>登 录 中...</span>
+                </el-button>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
@@ -25,38 +29,21 @@ export default {
     data(){
         //编写规则
         var checkUserName = (rule, value, callback) => {
-            
-            if(value === ""){
-                //返回错误信息
-                callback(new Error('学号不正确'))
-            }else{
-                if(typeof(value) != 'number'){
-                    console.log(typeof(value));
-                    callback(new Error('学号错误'))
+            if(typeof(value)=="number"){
+                if(value.length === 0){
+                    callback(new Error('请输入你的账号'))
                 }else{
-                    axios({
-                        method: 'POST',
-                        url: 'http://localhost:8080/api2/CheckId',
-                        params:{
-                            id:value
-                        }
-                    }).then((response)=>{
-                        if( !response.data ){
-                            //返回错误信息
-                            callback(new Error('学号错误!'));
-                        }else{
-                            //放行
-                            callback()
-                        }
-                    })
+                    callback();
                 }
-            }  
+            }else{
+                callback(new Error("账号格式错误"));
+            }
         }
 
         var checkPassword = (rule, value, callback) => {
-            if(value === ""){
+            if(value.length===0){
                     //返回错误信息
-                    callback(new Error('密码不可为空'))
+                    callback(new Error('请输入你的密码'))
             }else{
                 callback()
             }  
@@ -67,14 +54,15 @@ export default {
                 username:'',
                 password:'',
             },
+            loading:false,
             // 校准验证
             rules:{
                 username:[
                     //表示 使用checkUserName规则，焦点切换触发
-                    {validator: checkUserName,trigger:"change"}
+                    {validator: checkUserName,trigger:"blur"}
                 ],
                 password:[
-                    {validator:checkPassword,tigger:"change"}
+                    {validator:checkPassword,tigger:"blur"}
                 ]
             }
         }
@@ -82,23 +70,46 @@ export default {
     methods:{
         //提交前进行验证，同时还应该进行对账号密码的判定
         submit(formName){
+            this.loading = true;
+            console.log(this.$URL.mqttUrl);
             this.$refs[formName].validate((valid) => {
                 if(valid){
                     axios({
-                        method: 'POST',
-                        url: 'http://localhost:8080/api2/CheckPwd',
+                        method:"get",
+                        url:this.$URL.mqttUrl+"/score/login",
                         params:{
-                            id:this.formdata.username,
-                            pwd:this.formdata.password
+                            userName:this.formdata.username,
+                            password:this.formdata.password,
                         }
                     }).then((response)=>{
-                        sessionStorage.setItem('user',JSON.stringify(this.formdata.username))
-                        if (response.data) {
-                            this.$router.push('/index')
-                        } else {
-                            return false;
+                        if(response.data.data!=null&&response.data.code == 200){
+                            localStorage.setItem("userName",JSON.stringify(response.data.data.userName))
+                            localStorage.setItem("identity",JSON.stringify(response.data.data.identity))
+                            this.$router.push("/index")
+                        }else{
+                            this.$message({
+                                type:'error',
+                                message:"账号或密码错误"
+                            })
+                            this.formdata.password = ''
                         }
                     })
+                    // axios({
+                    //     method: 'POST',
+                    //     url: 'http://localhost:8080/api2/CheckPwd',
+                    //     params:{
+                    //         id:this.formdata.username,
+                    //         pwd:this.formdata.password
+                    //     }
+                    // }).then((response)=>{
+                    //     sessionStorage.setItem('user',JSON.stringify(this.formdata.username))
+                    //     if (response.data) {
+                    //         this.$router.push('/index')
+                    //     } else {
+                    //         return false;
+                    //     }
+                    // })
+                    this.loading = false;
                 }else{
                     return false;
                 }
@@ -110,24 +121,28 @@ export default {
         }
     },
     mounted() {
-        if(sessionStorage.getItem('user')!= null){
+        if(localStorage.getItem('userName')!= null&&localStorage.getItem('identity')!=null){
             this.$router.push('/index')
-        }    
+        }
     },
 }
 </script>
 
 <style scoped>
+#User_login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-image: url("../assets/banner.jpg");
+    background-size: 100% 100%;
+}
 .login-box{
-    border:1px solid #DCDFE6;
-    width: 350px;
-    margin:180px auto;
-    padding: 35px 35px 15px 35px;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    box-shadow: 0 0 25px #909399;
-  }
+    border-radius: 6px;
+    background: #ffffff;
+    width: 300px;
+    padding: 25px 25px 5px 25px;
+}
 #User_login #user,#password,#submit{
     margin: 20px;
 }
@@ -135,6 +150,16 @@ export default {
     text-align:center;
     margin: 0 auto 40px auto;
     color: #303133;
-  }
+}
+.logo{
+    position:absolute;
+    height: 40px;
+    line-height: 40px;
+    font-size:20px;
+    left: 0.5px;
+}
+.login{
+    width: 100%;
+}
 
 </style>
